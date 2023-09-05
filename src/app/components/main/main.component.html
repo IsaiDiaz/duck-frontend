@@ -1,0 +1,11 @@
+<h1>Generador de Patos Aleatorios</h1>
+<p>Los patos editados y los nuevos agregados se reflejan al final de la página</p>
+<button (click)="generateRandomDuckImage()">Generar Pato Aleatorio</button>
+
+<div *ngFor="let duck of ducksRepo.ducks$ | async">
+    <p>{{ duck.message }}</p>
+    <img [src]="duck.url" height="200">
+    <button (click)="updateDuck(duck.id, duck)" class="btn btn-primary">Edit</button>
+    <button (click)="deleteDuck(duck.id)" class="btn btn-danger">Delete</button>
+  </div>
+  
