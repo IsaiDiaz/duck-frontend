@@ -9,7 +9,7 @@ import { Delete } from '../models/delete';
 })
 export class DuckService {
 
-  private apiBackend = 'http://localhost:8080/api/v1';
+  private apiBackend = 'http://localhost:8081/api/v1';
 
   constructor(private http: HttpClient) { }
 
