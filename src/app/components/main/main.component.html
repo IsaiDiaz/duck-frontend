@@ -1,11 +1,41 @@
 <h1>Generador de Patos Aleatorios</h1>
 <p>Los patos editados y los nuevos agregados se reflejan al final de la página</p>
-<button (click)="generateRandomDuckImage()">Generar Pato Aleatorio</button>
 
-<div *ngFor="let duck of ducksRepo.ducks$ | async">
-    <p>{{ duck.message }}</p>
+<!--
+<div *ngFor="let duck of ducksRepo.ducks$ | paginate: {itemsPerPage: pageSize, currentPage: currentPage}">
     <img [src]="duck.url" height="200">
     <button (click)="updateDuck(duck.id, duck)" class="btn btn-primary">Edit</button>
     <button (click)="deleteDuck(duck.id)" class="btn btn-danger">Delete</button>
   </div>
+
+-->
+<div>
+  <mat-table [dataSource] = "dataSource">
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.id}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="image">
+      <mat-header-cell *matHeaderCellDef> URL </mat-header-cell>
+      <mat-cell *matCellDef="let element"> 
+        <img [src]="element.url" height="200" alt="Imagen">
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="message">
+      <mat-header-cell *matHeaderCellDef> Message </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.message}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef> Acciones </mat-header-cell>
+      <mat-cell *matCellDef="let element"> 
+        <button (click)="updateDuck(element.id, element)" class="btn btn-primary">Edit</button>
+        <button (click)="deleteDuck(element.id)" class="btn btn-danger">Delete</button>
+      </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let element; columns: displayedColumns"></mat-row>
+  </mat-table>
+  <mat-paginator [pageSizeOptions]="[5]" [length]="maxSize" (page)="pageChangeEvent($event)" showFirstLastButtons></mat-paginator>
   
+</div>
+

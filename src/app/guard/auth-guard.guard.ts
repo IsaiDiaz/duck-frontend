@@ -14,6 +14,7 @@ export class AuthGuard extends KeycloakAuthGuard {
   constructor(
     protected override readonly router: Router,
     protected readonly keycloak: KeycloakService,
+    private snackBar: MatSnackBar
     ) {
     super(router, keycloak);
   }
@@ -31,26 +32,24 @@ export class AuthGuard extends KeycloakAuthGuard {
 
     // Get the roles required from the route.
     const requiredRoles = route.data['roles'];
-    console.log(requiredRoles);
 
     // Allow the user to proceed if no additional roles are required to access the route.
-    if (!Array.isArray(requiredRoles) || requiredRoles.length === 0 || this.roles.includes('ADMIN')) {
+    if (!Array.isArray(requiredRoles) || requiredRoles.length === 0) {
       return true;
     }
 
     // Allow the user to proceed if all the required roles are present.
+    console.log(requiredRoles);
     console.log(this.roles);
-    /*const hasRequireRoles = requiredRoles.every((role) => this.roles.includes(role));
-
-    if(!hasRequireRoles){
-      this.snackBar.open('No tienes permisos para acceder a esta página', 'Cerrar', {
-        duration: 3000,
-        horizontalPosition: 'center',
-        verticalPosition: 'top',
+    
+    if (requiredRoles.some(role => this.roles.includes(role))) {
+      return true; // El usuario tiene al menos uno de los roles requeridos.
+    } else {
+      this.snackBar.open('Acceso denegado: No tienes los permisos necesarios.', 'Cerrar', {
+        duration: 5000, // Duración del mensaje en milisegundos
       });
-    }*/
-
-    return requiredRoles.every((role) => this.roles.includes(role));
+      return false;
+    }
     
   }
 }

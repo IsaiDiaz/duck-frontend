@@ -1,0 +1,5 @@
+<p>Patos aleatorios</p>
+<div class="center-container">
+    <img *ngIf="this.lastDuck" [src]="this.lastDuck.url" alt="Pato Aleatorio">
+    <button (click)="generateRandomDuckImage()">Obtener un pato aleatorio</button>
+</div>
